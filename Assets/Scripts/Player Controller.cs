@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BirdFlapController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public float flapForce = 5f; 
     public float moveSpeed = 5f;
@@ -33,8 +33,12 @@ public class BirdFlapController : MonoBehaviour
     }
 
     // ฟังก์ชันตรวจสอบเมื่อนกตกแมพ หรือชนสิ่งกีดขวาง
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Game Over!");
+        // เมื่อชนกับอะไรก็ตาม (ก้อนเมฆ หรือ สิ่งกีดขวาง)
+        Debug.Log("Game Over! Time Stopped.");
+        
+        // สั่งให้เวลาในเกมกลายเป็น 0 (หยุดนิ่ง)
+        Time.timeScale = 0f; 
     }
 }
