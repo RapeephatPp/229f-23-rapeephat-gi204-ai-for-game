@@ -1,28 +1,40 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class BirdFlapController : MonoBehaviour
 {
-    public float moveSpeed = 5f;      // ความเร็วในการบิน
-    public float tiltAmount = 15f;    // องศาการเอียงตัวเวลาบิน
+    public float flapForce = 5f; 
+    public float moveSpeed = 5f;
+    private Rigidbody rb;
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void Update()
+    {   
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Flap();
+        }
+    }
+
+    void Flap()
     {
-        // 1. รับค่า Input จากแป้นพิมพ์ (WASD หรือปุ่มลูกศร)
-        float moveX = Input.GetAxis("Horizontal"); // ซ้าย-ขวา
-        float moveY = Input.GetAxis("Vertical");   // ขึ้น-ลง
-
-        // 2. คำนวณทิศทางการเคลื่อนที่
-        Vector3 moveDirection = new Vector3(moveX, moveY, 0);
+        // รีเซ็ตความเร็วแนวดิ่งก่อน เพื่อให้กระโดดได้แรงเท่ากันทุกครั้ง
+        rb.linearVelocity = Vector2.up * flapForce;
         
-        // 3. สั่งให้ตัวละครเคลื่อนที่
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        if (audioSource != null)
+        {
+            audioSource.Play();
+        }
+    }
 
-        // 4. (แถม) เพิ่มการเอียงตัวเล็กน้อยให้ดูมีชีวิตชีวา (AI Suggested)
-        float tilt = -moveX * tiltAmount;
-        transform.rotation = Quaternion.Euler(0, 0, tilt);
-
-        // 5. พลิกหน้าตัวละครตามทิศทางที่ไป
-        if (moveX > 0) transform.localScale = new Vector3(1, 1, 1);
-        else if (moveX < 0) transform.localScale = new Vector3(-1, 1, 1);
+    // ฟังก์ชันตรวจสอบเมื่อนกตกแมพ หรือชนสิ่งกีดขวาง
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("Game Over!");
     }
 }
