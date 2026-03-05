@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     public float flapForce = 5f; 
@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+        
+        Time.timeScale = 1f;
     }
 
     void Update()
@@ -33,7 +35,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // ฟังก์ชันตรวจสอบเมื่อนกตกแมพ หรือชนสิ่งกีดขวาง
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter (Collision collision)
     {
         // เมื่อชนกับอะไรก็ตาม (ก้อนเมฆ หรือ สิ่งกีดขวาง)
         Debug.Log("Game Over! Time Stopped.");
